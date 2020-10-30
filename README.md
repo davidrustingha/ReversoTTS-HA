@@ -140,6 +140,16 @@ The bitrate for sound quailty . Supported bitrate are `22k, 96k, 128, 192k, 320k
 
 default: "`128k`"
 
+## Base_url setting
+When you have SSL enabled in your configuration the TTS service might fail to send the local file to your Google speaker. 
+With the base_url setting you can tell the TTS service to play from your externally accesible URL. 
+For more information take a look here: https://www.home-assistant.io/integrations/tts/#when-do-you-need-to-set-base_url-here
+
+
+```yaml
+# Example base_url entry
+base_url: https://yourdomain.duckdns.org/
+```
 ## Full configuration example
 
 The configuration sample below shows how an entry can look like:
@@ -148,7 +158,8 @@ The configuration sample below shows how an entry can look like:
 # Example configuration.yaml entry
 tts:
   - platform: reversotts
-    language: 'he-IL-Asaf-Hebrew'
+    base_url: https://reversotts.duckdns.org
+    language: "he-IL-Asaf-Hebrew"
     pitch: "100"
     bitrate: "128k"
 ```
@@ -161,7 +172,7 @@ There are several ways how to use TTS service.
 
   ![GitHub Logo](/images/service_small.png)
   
-* Through Automation in HomeAssistant , in this example i send to my Google HomeMini a meesage :
+* Through Automation in HomeAssistant , in this example i send a spoken message to my Google speaker :
 
   ```
   - id: Test Message
@@ -174,10 +185,10 @@ There are several ways how to use TTS service.
       to: 'on'
     condition:
     action:
-    - data:
+    - service: tts.reversotts_say
+      data:
         message: "This is a Test For GitHub Readme"
-      service: tts.reversotts_say
-      entity_id: media_player.google_home_mini_salon 
+        entity_id: media_player.google_home_mini_salon 
   ```
   
   **Good Luck !**
